@@ -30,7 +30,7 @@ class Database
         }
     }
 
-    public static function getInstance()
+    public static function getInstance(): Database
     {
         if (self::$instance == null)
         {
@@ -40,7 +40,7 @@ class Database
         return self::$instance;
     }
 
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->connection;
     }
