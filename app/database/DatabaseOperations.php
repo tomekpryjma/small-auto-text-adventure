@@ -11,7 +11,12 @@ class DatabaseOperations
         $this->connection = $databaseInstance->getConnection();
     }
 
-    public function insert($table, $values): bool
+    /**
+     * Allows for inserting data into the database.
+     * 
+     * @return mixed bool|string
+     */
+    public function insert($table, $values)
     {
         $placeholders = [];
 
@@ -35,7 +40,12 @@ class DatabaseOperations
         return $this->connection->lastInsertId();
     }
 
-    public function get($table, $where, $value, $columnToGet = '*') //: mixed
+    /**
+     * Allows for retrieving data from the database.
+     * 
+     * @return mixed array|string
+     */
+    public function get($table, $where, $value, $columnToGet = '*')
     {
         $sql = "SELECT $columnToGet FROM $table where $where = ?";
         $statement = $this->connection->prepare($sql);
