@@ -29,36 +29,42 @@ class DatabaseOperationsTest extends TestCase
     {
         $database = new Database();
         $connection = new DatabaseOperations($database->getInstance());
-        $this->assertIsArray($connection->get(
-            $this->defaultTable,
-            $this->defaultColumn,
-            $this->defaultColumnValue
-        ));
+        $this->assertIsArray(
+            $connection->get(
+                $this->defaultTable,
+                $this->defaultColumn,
+                $this->defaultColumnValue
+            )
+        );
     }
 
     public function testCanGetSpecificColumn()
     {
         $database = new Database();
         $connection = new DatabaseOperations($database->getInstance());
-        $this->assertEquals($this->defaultColumnValue, $connection->get(
-            $this->defaultTable,
-            $this->defaultColumn,
-            $this->defaultColumnValue,
-            $this->defaultColumn
-        ));
+        $this->assertEquals(
+            $this->defaultColumnValue, $connection->get(
+                $this->defaultTable,
+                $this->defaultColumn,
+                $this->defaultColumnValue,
+                $this->defaultColumn
+            )
+        );
     }
 
     public function testCanUpdateInDatabase()
     {
         $database = new Database();
         $connection = new DatabaseOperations($database->getInstance());
-        $this->assertTrue($connection->update(
-            $this->defaultTable,
-            $this->defaultColumn,
-            $this->defaultColumnValue,
-            $this->defaultColumn,
-            $this->defaultColumnValueAfterUpdate
-        ));
+        $this->assertTrue(
+            $connection->update(
+                $this->defaultTable,
+                $this->defaultColumn,
+                $this->defaultColumnValue,
+                $this->defaultColumn,
+                $this->defaultColumnValueAfterUpdate
+            )
+        );
 
         $actualValue = $connection->get(
             $this->defaultTable,
@@ -74,10 +80,12 @@ class DatabaseOperationsTest extends TestCase
     {
         $database = new Database();
         $connection = new DatabaseOperations($database->getInstance());
-        $this->assertTrue($connection->delete(
-            $this->defaultTable,
-            $this->defaultColumn,
-            $this->defaultColumnValueAfterUpdate
-        ));
+        $this->assertTrue(
+            $connection->delete(
+                $this->defaultTable,
+                $this->defaultColumn,
+                $this->defaultColumnValueAfterUpdate
+            )
+        );
     }
 }
