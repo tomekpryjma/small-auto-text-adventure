@@ -21,14 +21,21 @@ class DatabaseOperationsTest extends TestCase
      */
     public function testCanInsertIntoDatabase()
     {
-        $database = new Database();
-        $connection = new DatabaseOperations($database->getInstance());
-        $schema = [
-            'alive' => true,
-            'longest_streak' => 2
-        ];
-        $schema[$this->_defaultColumn] = $this->_defaultColumnValue;
-        $this->assertTrue($connection->insert($this->_defaultTable, $schema));
+        $result = $this->_insertBoilerplate();
+        $this->assertIsString($result);
+        $this->assertIsNumeric($result);
+    }
+
+    /**
+     * Test to determine whether a duplicate record can be inserted
+     * or not.
+     * 
+     * @return void
+     */
+    public function testCannotInsertDuplicateRecord()
+    {
+        $result = $this->_insertBoilerplate();
+        $this->assertNotTrue($result);
     }
 
     /**
@@ -117,5 +124,22 @@ class DatabaseOperationsTest extends TestCase
                 $this->_defaultColumnValueAfterUpdate
             )
         );
+    }
+
+    /**
+     * A method that houses boilerplate insert code.
+     * 
+     * @return mixed bool|string
+     */
+    private function _insertBoilerplate()
+    {
+        $database = new Database();
+        $connection = new DatabaseOperations($database->getInstance());
+        $schema = [
+            'alive' => true,
+            'longest_streak' => 2
+        ];
+        $schema[$this->_defaultColumn] = $this->_defaultColumnValue;
+        return $connection->insert($this->_defaultTable, $schema);
     }
 }
