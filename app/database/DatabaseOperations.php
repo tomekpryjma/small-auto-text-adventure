@@ -11,7 +11,7 @@ class DatabaseOperations
         $this->connection = $databaseInstance->getConnection();
     }
 
-    public function insertInto($table, $values): bool
+    public function insert($table, $values): bool
     {
         $placeholders = [];
 
@@ -46,6 +46,10 @@ class DatabaseOperations
         $statement = $this->connection->prepare($sql);
         return $statement->execute([$newValue, $value]);
     }
+
+    public function delete($table, $where, $value): bool
+    {
+        $sql = "DELETE FROM $table WHERE $where = ?";
 
         $statement = $this->connection->prepare($sql);
         return $statement->execute([$value]);
