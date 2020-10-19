@@ -26,7 +26,19 @@ class DatabaseOperations
         return $statement->execute(array_values($values));
     }
 
-    public function deleteFrom($table, $key, $value): bool
+    public function get($table, $where, $value, $columnToGet = '*') //: mixed
+    {
+        $sql = "SELECT $columnToGet FROM $table where $where = ?";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute([$value]);
+        $results = $statement->fetch();
+
+        if ($columnToGet == '*')
+        {
+            return $results;
+        }
+        return $results[$columnToGet];
+    }
     {
         $sql = "DELETE FROM $table WHERE $key = ?";
 
