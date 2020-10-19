@@ -19,11 +19,20 @@ class DatabaseOperations
             $placeholders[] = '?';
         }
 
-        $sql = 'INSERT INTO '. $table .'  (' . implode(',', array_keys($values)) . ')';
+        $sql = 'INSERT IGNORE INTO '. $table .'  (' . implode(',', array_keys($values)) . ')';
         $sql .=  ' VALUES ('. implode(',', $placeholders) .')';
 
         $statement = $this->connection->prepare($sql);
-        return $statement->execute(array_values($values));
+
+        try {
+            $statement->execute(array_values($values));
+        }
+        catch (\PDOException $exception) {
+            echo $exception->getMessage();
+            return false;
+        }
+
+        return $this->connection->lastInsertId();
     }
 
     public function get($table, $where, $value, $columnToGet = '*') //: mixed
