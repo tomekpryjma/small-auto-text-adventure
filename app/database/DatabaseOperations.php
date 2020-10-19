@@ -39,8 +39,13 @@ class DatabaseOperations
         }
         return $results[$columnToGet];
     }
+
+    public function update($table, $where, $value, $columnToUpdate, $newValue): bool
     {
-        $sql = "DELETE FROM $table WHERE $key = ?";
+        $sql = "UPDATE $table SET $columnToUpdate = ? WHERE $where = ?";
+        $statement = $this->connection->prepare($sql);
+        return $statement->execute([$newValue, $value]);
+    }
 
         $statement = $this->connection->prepare($sql);
         return $statement->execute([$value]);
