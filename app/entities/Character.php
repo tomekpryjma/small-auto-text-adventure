@@ -12,6 +12,7 @@ class Character implements CharacterInterface
     {
         $this->connection = $connection;
         $this->model = new CharacterModel($connection, $name);
+        $this->model = $this->model->add();
     }
 
     /**
@@ -42,5 +43,10 @@ class Character implements CharacterInterface
     public function getLongestStreak(): int
     {
         return $this->model->longest_streak;
+    }
+
+    public function delete()
+    {
+        $this->model->delete();
     }
 }

@@ -10,15 +10,18 @@ class Model
 {
     use DebugTrait;
 
-    protected $_table;
+    protected static $_table;
     protected $_schema = [];
     private $_data = [];
     protected $_id;
 
-    public function __construct(DatabaseOperations $connection)
+    public function __construct(DatabaseOperations $connection, $id = null)
     {
         $this->connection = $connection;
-        $this->add();
+
+        if ($id) {
+            $this->_id = $id;
+        }
     }
 
     /**
@@ -30,7 +33,7 @@ class Model
      */
     public function add(): Model
     {
-        $result = $this->connection->insert($this->_table, $this->_schema);
+        $result = $this->connection->insert(static::$_table, $this->_schema);
 
         if (! $result)  {
             throw new PDOException('Model insertion failed');
@@ -48,7 +51,7 @@ class Model
      */
     public function get(): Model
     {
-        $result = $this->connection->get($this->_table, 'id', $this->_id);
+        $result = $this->connection->get(static::$_table, 'id', $this->_id);
 
         $this->setupModelProperties($result);
 
@@ -62,7 +65,7 @@ class Model
      */
     public function delete(): bool
     {
-        return $this->connection->delete($this->_table, 'id', $this->_id);
+        return $this->connection->delete(static::$_table, 'id', $this->_id);
     }
 
     /**
@@ -98,6 +101,15 @@ class Model
     public function __set($name, $value): void
     {
         $this->_data[$name] = $value;
+    }
+
+    /**
+     * Retrieves a row from the database and parses it as a Model instance.
+     */
+    public static function find($id, DatabaseOperations $connection): Model
+    {
+        $model = new Model($connection, $id);
+        return $model->get();
     }
 
     /**

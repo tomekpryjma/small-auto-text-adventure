@@ -7,9 +7,9 @@ use App\Models\Model;
 
 class CharacterModel extends Model
 {
-    protected $_table = 'characters';
+    protected static $_table = 'characters';
 
-    public function __construct(DatabaseOperations $connection, string $name)
+    public function __construct(DatabaseOperations $connection, string $name, $id = null)
     {
         $this->_schema = [
             'name' => $name,
